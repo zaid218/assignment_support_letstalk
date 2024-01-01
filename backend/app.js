@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_CONNECTION,{useNewUrlParser:true})
 .then(()=>{
     console.log("MongoDB is Connected..")
 }).catch(err=>{
-    console.log(err.message);
+  console.log('error is '+ err.message);
 })
 
 
