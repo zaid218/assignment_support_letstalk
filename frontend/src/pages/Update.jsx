@@ -24,7 +24,7 @@ const Update = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://mindful-gurukul.onrender.com/api/user/emp/${id}`, inputs);
+      await axios.put(`https://react-crud-v3am.onrender.com/api/user/${id}`, inputs);
       navigate("/login");
     } catch (err) {
       setError(err.response.data);

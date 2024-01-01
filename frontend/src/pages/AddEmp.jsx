@@ -22,13 +22,13 @@ const AddEmp = () => {
       const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          await axios.post("https://mindful-gurukul.onrender.com/api/user/emp", inputs);
+          await axios.post("https://react-crud-v3am.onrender.com/api/user/emp", inputs);
           navigate("/user/dashboard");
         } catch (err) {
           setError(err.response.data);
         }
       };
-  //https://react-crud-v3am.onrender.com/api/user/emp
+
   return (
     <div className="auth2" >
     <div className='xt' style={{"marginTop" : "4.5em"}} data-aos="zoom-out">
