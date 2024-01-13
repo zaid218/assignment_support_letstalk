@@ -70,41 +70,51 @@ const register = async (req, res) => {
 
 //==================> Login user <=======================
 
-const loginUser = async function (req, res) {
-  try {
-    let Body = req.body;
-    const { email, password } = Body;
-    
-    if (!email) {
-      return res.status(400).json("Please enter email address");
-    }
-    
-    if (!password) {
-      return res.status(400).json("Please enter password");
-    }
-    
-    let getUser = await userModel.findOne({  email });
-    if (!getUser) return res.status(401).json("Email or Password is incorrect.");
-    
-    let matchPassword = await bcrypt.compare(password, getUser.password);
-    if (!matchPassword) return res.status(401).json("Email or Password is incorrect.");
+
+    const loginUser = async function (req, res) {
+      try {
+        
+        const { email, password } = req.body;
+
+        if (!email) {
+          return res.status(400).json("Please enter email address");
+        }
+
+        if (!password) {
+          return res.status(400).json("Please enter password");
+        }
+
+        let getUser = await userModel.findOne({ email });
+        console.log("getUser:", getUser);
+
+        if (!getUser) return res.status(401).json("Email  is incorrect.");
+
+        let matchPassword = await bcrypt.compare(password, getUser.password);
+        console.log("Entered Password:", password);
+        console.log("Stored Hashed Password:", getUser.password);
+        console.log("Matched Password:", matchPassword);
+
+        if (!matchPassword) return res.status(401).json("Password is incorrect.");
+
     
     //token
     
-    const token = jwt.sign(
-      {
-        userId: getUser._id.toString(),
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-      );
+        const token = jwt.sign(
+          {
+            userId: getUser._id.toString(),
+          },
+          process.env.JWT_SECRET,  // Provide a fallback value for testing
+         { expiresIn: "30d" }
+        );
+        console.log("Generated Token:", token);
       const { newPassword, ...other } = getUser
       let User = getUser
       
       res.cookie("access_token", token, 
       {
         httpOnly: true,
-      }).status(200).json({User, token});
+        }).status(200).json({ User, token });
+        
       
     } catch (error) {
       return res.status(500).json(error.message);

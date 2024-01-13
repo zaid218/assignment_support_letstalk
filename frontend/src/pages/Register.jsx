@@ -5,6 +5,8 @@ import axios from "axios";
 import Footer from '../components/Footer';
 
 const Register = () => {
+  const baseUrl = "http://localhost:8800/api/";
+  const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -22,7 +24,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://react-crud-v3am.onrender.com/api/user/register", inputs);
+      await axios.post(`${baseUrl}user/register`, inputs
+        //send token along with post   by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+
+      );
       navigate("/login");
     } catch (err) {
       setError(err.response.data);
@@ -66,7 +71,7 @@ const Register = () => {
         <button onClick={handleSubmit} className='form-btn' >Register</button>
         {err && <p>{err}</p>}
         <span>
-          Aldready a member?{" "}
+          Already a member?{" "}
           <Link
             style={{ textDecoration: "none", color: "#ff9899", "backgroundColor": "inherit" }}
             to="/login"

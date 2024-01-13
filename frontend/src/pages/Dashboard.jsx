@@ -7,6 +7,8 @@ import Modal from "../components/Model";
 import Navbar from "../components/Navbar";
 
 const Dashboard = () => {
+  const baseUrl = "http://localhost:8800/api/";
+  const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const [emp, setEmp] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -21,7 +23,9 @@ const Dashboard = () => {
     setIsLoading(true); // Set loading state to true
     try {
       const result = await axios.get(
-        "https://react-crud-v3am.onrender.com/api/user/emp"
+        `${baseUrl}user/emp`
+        //first fetchEmp is not called becausd caaling already done in the useeffect  and secondly send token to fetch by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+
       );
       setEmp(result.data);
     } catch (error) {
@@ -34,7 +38,9 @@ const Dashboard = () => {
     setIsLoading(true); // Set loading state to true
     try {
       const result = await axios.get(
-        "https://react-crud-v3am.onrender.com/api/user/emp"
+        `${baseUrl}user/emp`
+        //send token to update  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+
       );
       setEmp(result.data);
     } catch (error) {
@@ -44,8 +50,28 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchEmp();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const userId = currentUser ? currentUser.User._id : null;
+        if (!userId) {
+          // Handle the case where userId is not available
+          setEmployeeList([]); // Clear the employee list or show an empty list
+          return;
+        }
+
+        const response = await axios.get(`${baseUrl}user/emp`, {
+          data: { userId },
+          //send token to fetch  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+
+        });
+        setEmployeeList(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, [currentUser]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -103,7 +129,7 @@ const Dashboard = () => {
           </div>
 
           {isLoading ? ( // Display loading animation if isLoading is true
-            <div style={{marginLeft : "40rem", marginTop : "2rem"}}><HashLoader color="#3EDFFF" loading={isLoading} size={180} /></div>
+            <div style={{ marginLeft: "40rem", marginTop: "2rem" }}><HashLoader color="#3EDFFF" loading={isLoading} size={180} /></div>
           ) : (
             <table className="table">
               <thead data-aos="slide-up">
@@ -127,7 +153,7 @@ const Dashboard = () => {
                     <td>{item[1].Salary}</td>
                     <td>{item[1].Designation}</td>
                     <td data-label="Update">
-                      {currentUser.username === emp.Name && (
+                      {currentUser.User.username === item[1].Name && (
                         <Link to={`/employ/edit/${item[1]._id}`}>
                           <i className="fa-regular fa-pen-to-square"></i>
                         </Link>

@@ -1,82 +1,103 @@
-import React from 'react'
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
 const AddEmp = () => {
+  const baseUrl = 'http://localhost:8800/api/';
+ //=================================>
+  const [employee, setEmployee] = useState({
+    Name: '',
+    Age: 0,
+    Salary: 0,
+    Designation: '',
+  });
+  //===============================>/
+  const [err, setError] = useState(null);
 
-    const [inputs, setInputs] = useState({
-        Name: "",
-        Age: "",
-        Salary: "",
-        Designation: "",
-      });
-      const [err, setError] = useState(null);
-    
-      const navigate = useNavigate();
-    
-      const handleChange = (e) => {
-        setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-      };
-    
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          await axios.post("https://react-crud-v3am.onrender.com/api/user/emp", inputs);
-          navigate("/user/dashboard");
-        } catch (err) {
-          setError(err.response.data);
-        }
-      };
+  const navigate = useNavigate();
+  //==============================>
+  const { currentUser } = useContext(AuthContext);
+//===============================>/
+  const handleChange = (e) => {
+    setEmployee((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const userId = currentUser ? currentUser.User._id : null;
+      if (!userId) {
+        // Handle the case where userId is not available
+        setError("User not authenticated. Please log in.");
+        return;
+      }
+
+      await axios.post(`${baseUrl}user/emp`, { ...employee, userId }
+        //send token to add emp  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+
+      );
+      navigate('/user/dashboard');
+    } catch (err) {
+      setError(err.response.data);
+    }
+  };
 
   return (
-    <div className="auth2" >
-    <div className='xt' style={{"marginTop" : "4.5em"}} data-aos="zoom-out">
-      <form style={{"height" : "23em"}} data-aos="zoom-in">
-      <h1>Add Employee</h1>
-        <input
-          required
-          type="text"
-          placeholder="Name"
-          name="Name"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="number"
-          placeholder="Age"
-          name="Age"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="number"
-          placeholder="Salary"
-          name="Salary"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="text"
-          placeholder="Designation"
-          name="Designation"
-          onChange={handleChange}
-        />
+    <div className="auth2">
+      <div className="xt" style={{ marginTop: '4.5em' }} data-aos="zoom-out">
+        <form style={{ height: '23em' }} data-aos="zoom-in">
+          <h1>Add Employee</h1>
+          <input
+            required
+            type="text"
+            placeholder="Name"
+            name="Name"
+            onChange={handleChange}
+          />
+          <input
+            required
+            type="number"
+            placeholder="Age"
+            name="Age"
+            onChange={handleChange}
+          />
+          <input
+            required
+            type="number"
+            placeholder="Salary"
+            name="Salary"
+            onChange={handleChange}
+          />
+          <input
+            required
+            type="text"
+            placeholder="Designation"
+            name="Designation"
+            onChange={handleChange}
+          />
 
-        <button onClick={handleSubmit} className='form-btn' >ADD</button>
-        {err && <p>{err}</p>}
-        <span>
-          Nothing to add ?{" "}
-          <Link
-            style={{ textDecoration: "none", color: "#ff9899", "backgroundColor": "inherit" }}
-            to="/user/dashboard"
-          >
-            Dashboard
-          </Link>
-        </span>
-      </form></div>
+          <button onClick={handleSubmit} className="form-btn">
+            Add Employee
+          </button>
+          {err && <p>{err}</p>}
+          <span>
+            Cancel Add Employee?{' '}
+            <Link
+              style={{
+                textDecoration: 'none',
+                color: '#ff9899',
+                backgroundColor: 'inherit',
+              }}
+              to="/user/dashboard"
+            >
+              Dashboard
+            </Link>
+          </span>
+        </form>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddEmp
+export default AddEmp;

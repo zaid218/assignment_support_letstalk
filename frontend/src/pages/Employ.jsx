@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Employ = () => {
+  const baseUrl = "http://localhost:8800/api/";
+  const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const [err, setError] = useState(null);
   const [value, setValue] = useState({});
   
@@ -11,7 +13,10 @@ const Employ = () => {
   const id = location.pathname.split("/")[3];
   
   const fetchEmp = async () => {
-    const res = await axios.get(`https://react-crud-v3am.onrender.com/api/user/emp/${id}`);
+    const res = await axios.get(`${baseUrl}user/emp/${id}`
+      //send token to eet  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+
+    );
     setValue(res.data);
   };
 
@@ -24,7 +29,9 @@ const Employ = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://react-crud-v3am.onrender.com/api/user/emp/${id}`, value);
+      await axios.put(`${baseUrl}user/emp/${id}`, value
+        //send token along with put  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+     );
       navigate("/user/dashboard");
     } catch (error) {
       setError(error.message);

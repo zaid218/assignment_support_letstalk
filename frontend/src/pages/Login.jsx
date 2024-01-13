@@ -12,22 +12,18 @@ const Login = () => {
   const [err, setError] = useState(null);
 
   const navigate = useNavigate();
-
-  const {login} = useContext(AuthContext)
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  
-    const { email, password } = input;
-    setInputValid(email.trim().length > 0 && password.trim().length > 0);
+    setInputValid(input.email.trim().length > 0 && input.password.trim().length > 0);
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await login(input)
+      await login(input);
       navigate("/user/dashboard");
     } catch (err) {
       setError(err.response.data);
@@ -35,19 +31,20 @@ const Login = () => {
   };
 
   return (
-    <div className='auth2' >
-    <div className='xt' data-aos="zoom-out">
-      <form data-aos="zoom-in">
-      <h1>LOGIN</h1>
-        <input required type="email" placeholder="email" name='email' onChange={handleChange} />   
-        <input required type="password" placeholder="password" name='password' onChange={handleChange}/> 
-        <button  onClick={handleSubmit} className='form-btn' disabled={!isInputValid}>Login</button>
-        {err && <p>{err}</p>}
-        <span>New member? <Link style={{textDecoration: "none", color : '#ff9899'}} to="/register">Register</Link></span>
-      </form></div>
-      <Footer/>
+    <div className='auth2'>
+      <div className='xt' data-aos="zoom-out">
+        <form data-aos="zoom-in">
+          <h1>LOGIN</h1>
+          <input required type="email" placeholder="email" name='email' onChange={handleChange} />
+          <input required type="password" placeholder="password" name='password' onChange={handleChange} />
+          <button onClick={handleSubmit} className='form-btn' disabled={!isInputValid}>Login</button>
+          {err && <p>{err}</p>}
+          <span>New member? <Link style={{ textDecoration: "none", color: '#ff9899' }} to="/register">Register</Link></span>
+        </form>
+      </div>
+      <Footer />
     </div>
-  )
+  );
 }
 
 export default Login;

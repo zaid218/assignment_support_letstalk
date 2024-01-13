@@ -5,11 +5,13 @@ import axios from "axios";
 import { AuthContext } from '../context/AuthContext';
 
 const Update = () => {
+  const baseUrl = "http://localhost:8800/api/";
+  const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const { currentUser } = useContext(AuthContext);
   const [inputs, setInputs] = useState({
-    username: currentUser.User.username,
-    email: currentUser.User.email,
-    phone: currentUser.User.phone,
+    username: currentUser?.User.username,
+    email: currentUser?.User.email,
+    phone: currentUser?.User.phone,
   });
 
   const [err, setError] = useState(null);
@@ -24,7 +26,10 @@ const Update = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://react-crud-v3am.onrender.com/api/user/${id}`, inputs);
+      await axios.put(`${baseUrl}user/${id}`, inputs
+        //send token along with put  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+
+      );
       navigate("/login");
     } catch (err) {
       setError(err.response.data);
@@ -64,7 +69,7 @@ const Update = () => {
         <button onClick={handleSubmit} className='form-btn' >Update</button>
         {err && <p>{err}</p>}
         <span>
-          Cancle Update?{" "}
+          Cancel Update?{" "}
           <Link
             style={{ textDecoration: "none", color: "#ff9899", "backgroundColor": "inherit" }}
             to="/user/dashboard"

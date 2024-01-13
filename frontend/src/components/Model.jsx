@@ -3,10 +3,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 function Modal({ setOpenModal, employeeId, setSelectedEmployeeId, updateEmpData }) {
-
+  const baseUrl = "http://localhost:8800/api/";
+  const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const handleDelete = async () => {
     try {
-      await axios.delete(`https://react-crud-v3am.onrender.com/api/user/emp/${employeeId}`);
+      await axios.delete(`${baseUrl}user/emp/${employeeId}`
+        //send token to delete  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+      );
       updateEmpData();
     } catch (error) {
       console.log(error.message);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import "./style.scss";
 import Home from "./pages/Home";
@@ -14,6 +14,7 @@ import PaymentGateway from "./pages/PaymentGateway";
 import Employ from "./pages/Employ";
 import AddEmp from "./pages/AddEmp";
 import NotFound from "./pages/NotFound";
+import { AuthContext } from './context/AuthContext';
 
 function Layout() {
   return (
@@ -36,16 +37,16 @@ const router = createBrowserRouter([
       { path: "/about", element: <About /> },
       { path: "/donate", element: <PaymentGateway /> },
       { path: "/employ/edit/:id", element: <Employ /> },
-      { path: "/employ/add", element: <AddEmp /> },
+      { path: "/employ/add", element: <AddEmp /> },  // Remove userId from here
       { path: "/*", element: <NotFound /> },
     ],
   },
   {
-    path: "/Register",
+    path: "/register",
     element: <Register />,
   },
   {
-    path: "/Login",
+    path: "/login",
     element: <Login />,
   },
   {
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { currentUser } = useContext(AuthContext); // Add this line
   return (
     <div className="app">
       <div className="container">
