@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 function Modal({ setOpenModal, employeeId, setSelectedEmployeeId, updateEmpData }) {
-  const baseUrl = "http://localhost:8800/api/";
+  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const handleDelete = async () => {
     try {

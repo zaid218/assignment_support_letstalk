@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
 const AddEmp = () => {
-  const baseUrl = 'http://localhost:8800/api/';
+  const baseUrl = 'https://mindful-gurukul.onrender.com/api/';
  //=================================>
   const [employee, setEmployee] = useState({
     Name: '',

@@ -7,7 +7,7 @@ import Modal from "../components/Model";
 import Navbar from "../components/Navbar";
 
 const Dashboard = () => {
-  const baseUrl = "http://localhost:8800/api/";
+  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const [emp, setEmp] = useState({});
   const [modalOpen, setModalOpen] = useState(false);

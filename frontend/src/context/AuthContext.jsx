@@ -5,7 +5,7 @@ import { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext();
 
 export const AuthContexProvider = ({ children }) => {
-  const baseUrl = "http://localhost:8800/api/";
+  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );

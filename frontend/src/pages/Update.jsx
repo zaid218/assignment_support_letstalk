@@ -5,7 +5,7 @@ import axios from "axios";
 import { AuthContext } from '../context/AuthContext';
 
 const Update = () => {
-  const baseUrl = "http://localhost:8800/api/";
+  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const { currentUser } = useContext(AuthContext);
   const [inputs, setInputs] = useState({

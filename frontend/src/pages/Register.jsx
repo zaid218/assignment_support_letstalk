@@ -5,7 +5,7 @@ import axios from "axios";
 import Footer from '../components/Footer';
 
 const Register = () => {
-  const baseUrl = "http://localhost:8800/api/";
+  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const [inputs, setInputs] = useState({
     username: "",
