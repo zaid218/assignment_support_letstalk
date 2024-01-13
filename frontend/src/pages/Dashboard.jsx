@@ -18,7 +18,6 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false); // New state variable
 
   const { currentUser } = useContext(AuthContext);
-
   const fetchEmp = async () => {
     setIsLoading(true); // Set loading state to true
     try {
@@ -55,16 +54,15 @@ const Dashboard = () => {
         const userId = currentUser ? currentUser.User._id : null;
         if (!userId) {
           // Handle the case where userId is not available
-          setEmployeeList([]); // Clear the employee list or show an empty list
+          setEmp({}); // Clear the employee list or show an empty list
           return;
         }
 
         const response = await axios.get(`${baseUrl}user/emp`, {
           data: { userId },
           //send token to fetch  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
-
         });
-        setEmployeeList(response.data);
+        setEmp(response.data);
       } catch (err) {
         console.error(err);
       }
@@ -72,6 +70,7 @@ const Dashboard = () => {
 
     fetchData();
   }, [currentUser]);
+
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -104,6 +103,7 @@ const Dashboard = () => {
             employeeId={selectedEmployeeId}
             setSelectedEmployeeId={setSelectedEmployeeId}
             updateEmpData={updateEmpData}
+            isLoading={isLoading}
           />
         )}
         <div className="dash-main">
