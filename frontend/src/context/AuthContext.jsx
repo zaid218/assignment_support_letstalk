@@ -9,6 +9,7 @@ export const AuthContexProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
 
+
   const login = async (inputs) => {
     try {
       const res = await axios.post(`${baseUrl}user/login`, inputs);
@@ -16,7 +17,11 @@ export const AuthContexProvider = ({ children }) => {
       const token = res?.data?.token;
 
       if (token) {
-        setCurrentUser(res.data);
+        setCurrentUser((prevUser) => {
+          const newUser = res.data;
+          localStorage.setItem("user", JSON.stringify(newUser));
+          return newUser;
+        });
         // Update localStorage after setting currentUser
         localStorage.setItem("user", JSON.stringify(res.data));
       } else {
@@ -41,8 +46,12 @@ export const AuthContexProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
-  }, [currentUser]);
+    setCurrentUser((prevUser) => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      return storedUser;
+    });
+
+  }, []);
 
   return (
     <AuthContext.Provider value={{ currentUser, login, logout }}>
