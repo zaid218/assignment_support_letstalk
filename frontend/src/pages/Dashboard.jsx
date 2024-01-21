@@ -50,7 +50,6 @@ const Dashboard = () => {
         }
         const token = currentUser ? currentUser.token : null;
         if (!token) {
-          setError("User token not available. Please log in.");
           return;
         }
         const response = await axios.post(`${baseUrl}user/empAll`, {

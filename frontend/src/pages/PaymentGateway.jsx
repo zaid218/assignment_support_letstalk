@@ -45,6 +45,10 @@ const PaymentGateway = () => {
 
 	const handlePayment = async () => {
 		try {
+			const token = currentUser ? currentUser.token : null;
+			if (!token) {
+				return;
+			}
 			const orderUrl = `${baseUrl}payment`;
 			const { data } = await axios.post(orderUrl, { amount: buy.amount,token }
 				//send token along with post  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
