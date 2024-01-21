@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import axios from 'axios';
-
+import { baseUrl } from '../apiconfig';
+import { AuthContext } from '../context/AuthContext';
 const PaymentGateway = () => {
-	const baseUrl = "https://mindful-gurukul.onrender.com/api/";
+	const { currentUser } = useContext(AuthContext);
 
 	const [buy] = useState({
 		amount: 10
@@ -20,8 +21,12 @@ const PaymentGateway = () => {
 			order_id: data.id,
 			handler: async (response) => {
 				try {
+					const token = currentUser ? currentUser.token : null;
+					if (!token) {
+						return;
+					}
 					const verifyUrl = `${baseUrl}payment/verify`;
-					const { data } = await axios.post(verifyUrl, response
+					const { data } = await axios.post(verifyUrl, {response,token}
 						//send token along with post   by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
 
 					);
@@ -41,7 +46,7 @@ const PaymentGateway = () => {
 	const handlePayment = async () => {
 		try {
 			const orderUrl = `${baseUrl}payment`;
-			const { data } = await axios.post(orderUrl, { amount: buy.amount }
+			const { data } = await axios.post(orderUrl, { amount: buy.amount,token }
 				//send token along with post  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
 
 			)

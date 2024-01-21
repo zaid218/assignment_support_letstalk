@@ -2,23 +2,20 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-
+import { baseUrl } from '../apiconfig';
 const AddEmp = () => {
-  const baseUrl = 'https://mindful-gurukul.onrender.com/api/';
- //=================================>
+  
   const [employee, setEmployee] = useState({
     Name: '',
     Age: 0,
     Salary: 0,
     Designation: '',
   });
-  //===============================>/
   const [err, setError] = useState(null);
 
   const navigate = useNavigate();
-  //==============================>
   const { currentUser } = useContext(AuthContext);
-//===============================>/
+
   const handleChange = (e) => {
     setEmployee((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -28,14 +25,20 @@ const AddEmp = () => {
     try {
       const userId = currentUser ? currentUser.User._id : null;
       if (!userId) {
-        // Handle the case where userId is not available
         setError("User not authenticated. Please log in.");
         return;
       }
 
-      await axios.post(`${baseUrl}user/emp`, { ...employee, userId }
-        //send token to add emp  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+      const token = currentUser ? currentUser.token : null;
+      if (!token) {
+        setError("User token not available. Please log in.");
+        return;
+      }
 
+      await axios.post(
+        `${baseUrl}user/emp`,
+        { ...employee, userId,token },
+        
       );
       navigate('/user/dashboard');
     } catch (err) {

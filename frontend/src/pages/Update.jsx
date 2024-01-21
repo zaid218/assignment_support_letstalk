@@ -3,9 +3,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from '../context/AuthContext';
-
+import { baseUrl } from '../apiconfig';
 const Update = () => {
-  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const { currentUser } = useContext(AuthContext);
   const [inputs, setInputs] = useState({
     username: currentUser?.User.username,
@@ -25,7 +24,12 @@ const Update = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${baseUrl}user/${id}`, inputs
+      const token = currentUser ? currentUser.token : null;
+      if (!token) {
+        setError("User token not available. Please log in.");
+        return;
+      }
+      await axios.put(`${baseUrl}user/${id}`, {inputs,token}
         //send token along with put  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
 
       );
@@ -37,46 +41,46 @@ const Update = () => {
 
   return (
     <div className="auth2">
-    <div className='xt' style={{"marginTop" : "4.5em"}} data-aos="zoom-out">
-      <form data-aos="zoom-in">
-      <h1>Update Profile</h1>
-        <input
-          required
-          type="text"
-          placeholder="username"
-          value={inputs.username}
-          name="username"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="email"
-          placeholder="email"
-          value={inputs.email}
-          name="email"
-          onChange={handleChange}
-        />
-        <input
-          required
-          type="number"
-          placeholder="phone"
-          value={inputs.phone}
-          name="phone"
-          onChange={handleChange}
-        />
+      <div className='xt' style={{ "marginTop": "4.5em" }} data-aos="zoom-out">
+        <form data-aos="zoom-in">
+          <h1>Update Profile</h1>
+          <input
+            required
+            type="text"
+            placeholder="username"
+            value={inputs.username}
+            name="username"
+            onChange={handleChange}
+          />
+          <input
+            required
+            type="email"
+            placeholder="email"
+            value={inputs.email}
+            name="email"
+            onChange={handleChange}
+          />
+          <input
+            required
+            type="number"
+            placeholder="phone"
+            value={inputs.phone}
+            name="phone"
+            onChange={handleChange}
+          />
 
-        <button onClick={handleSubmit} className='form-btn' >Update</button>
-        {err && <p>{err}</p>}
-        <span>
-          Cancel Update?{" "}
-          <Link
-            style={{ textDecoration: "none", color: "#ff9899", "backgroundColor": "inherit" }}
-            to="/user/dashboard"
-          >
-            Dashboard
-          </Link>
-        </span>
-      </form>
+          <button onClick={handleSubmit} className='form-btn' >Update</button>
+          {err && <p>{err}</p>}
+          <span>
+            Cancel Update?{" "}
+            <Link
+              style={{ textDecoration: "none", color: "#ff9899", "backgroundColor": "inherit" }}
+              to="/user/dashboard"
+            >
+              Dashboard
+            </Link>
+          </span>
+        </form>
       </div>
     </div>
   );

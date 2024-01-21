@@ -1,20 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useContext } from "react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { baseUrl } from '../apiconfig';
+import { AuthContext } from "../context/AuthContext";
 const Employ = () => {
-  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
+  const { currentUser } = useContext(AuthContext); 
   const [err, setError] = useState(null);
   const [value, setValue] = useState({});
-  
+
   const location = useLocation();
   const id = location.pathname.split("/")[3];
   
   const fetchEmp = async () => {
-    const res = await axios.get(`${baseUrl}user/emp/${id}`
-      //send token to eet  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+    const token = currentUser ? currentUser.token : null;
+    if (!token) {
+      setError("User token not available. Please log in.");
+      return;
+    }
+    const res = await axios.put(`${baseUrl}user/empput/${id}`, {
 
+      //send token to eet  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
+      token
+    }
     );
     setValue(res.data);
   };
@@ -28,9 +36,21 @@ const Employ = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${baseUrl}user/emp/${id}`, value
-        //send token along with put  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
-     );
+      
+      const token = currentUser ? currentUser.token : null;
+      if (!token) {
+        setError("User token not available. Please log in.");
+        return;
+      }
+      const updatedValue = {
+        ...value,
+        token,
+      };
+      const userId = currentUser ? currentUser.User._id : null;
+      if (!userId) {
+        return;
+      }
+      await axios.put(`${baseUrl}user/emp/${userId}/${id}`, updatedValue);
       navigate("/user/dashboard");
     } catch (error) {
       setError(error.message);

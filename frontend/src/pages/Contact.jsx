@@ -58,22 +58,22 @@ const Contact = () => {
   return (
     <div className='contact'>
       <div>
-          <div className='form'data-aos="slide-down" >
-        <form method="POST" data-aos="zoom-in">
-          <h1>Contact &nbsp; <span>Us</span></h1>
-        <div>
-          <input required type="text" placeholder="Your Name" name='name' autoComplete='off' value={userData.name} onChange={postUserData} /></div>
-        <div>
-          <input required type="email" placeholder="Your Email" name='email' autoComplete='off' value={userData.email} onChange={postUserData} /></div>
-        <div>
-          <input required type="number" placeholder="Your Number" name='phone' autoComplete='off' value={userData.phone} onChange={postUserData} /></div>
-        <div className='msg'>
-          <input required type="text" placeholder="Your Message" name='message' autoComplete='off' value={userData.message} onChange={postUserData} /></div>
-          <div className='form-btn'>
-            <button onClick={submitData} >Submit</button>
-          </div>
-        </form></div>
-          </div>
+        <div className='form' data-aos="slide-down" >
+          <form method="POST" data-aos="zoom-in">
+            <h1>Contact &nbsp; <span>Us</span></h1>
+            <div>
+              <input required type="text" placeholder="Your Name" name='name' autoComplete='off' value={userData.name} onChange={postUserData} /></div>
+            <div>
+              <input required type="email" placeholder="Your Email" name='email' autoComplete='off' value={userData.email} onChange={postUserData} /></div>
+            <div>
+              <input required type="number" placeholder="Your Number" name='phone' autoComplete='off' value={userData.phone} onChange={postUserData} /></div>
+            <div className='msg'>
+              <input required type="text" placeholder="Your Message" name='message' autoComplete='off' value={userData.message} onChange={postUserData} /></div>
+            <div className='form-btn'>
+              <button onClick={submitData} >Submit</button>
+            </div>
+          </form></div>
+      </div>
     </div>
   )
 }

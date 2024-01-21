@@ -14,11 +14,11 @@ router.delete("/api/user/:id", userController.deleteUser);
 
 //=======================> Employ <====================
 
-router.get("/api/user/emp", empController.getEmp)
-router.get("/api/user/emp/:id", empController.getEmpById)
+router.post("/api/user/empAll", empController.getEmp)
+router.put("/api/user/empput/:id", empController.getEmpById)
 router.post("/api/user/emp", empController.addEmp)
-router.put("/api/user/emp/:id", empController.updateEmp)
-router.delete("/api/user/emp/:id", empController.deleteEmp)
+router.put("/api/user/emp/:userId/:empId", empController.updateEmp)
+router.post("/api/user/emp/:userId/:empId", empController.deleteEmp)
 
 //=======================> payment <====================
 router.post("/api/payment", razorPay.payment)

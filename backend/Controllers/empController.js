@@ -63,22 +63,25 @@ const updateEmp = async (req, res) => {
         const userId = req.params.userId; // Extract userId from params
 
         // Check if the employee belongs to the user
-        const emp = await empModel.findOne({ _id: req.params.id, userId });
+        const emp = await empModel.findOne({ _id: req.params.empId, userId });
 
         if (!emp) {
             return res.status(404).json("Employee not found or unauthorized access");
         }
 
-        const updatedEmp = await empModel.updateOne({ _id: req.params.id }, { $set: body });
+        // Update the employee with the correct ID
+        const updatedEmp = await empModel.updateOne({ _id: req.params.empId, userId }, { $set: body });
+
         return res.status(200).json(updatedEmp);
     } catch (error) {
         return res.status(500).json(error.message);
     }
 };
 
+
 const deleteEmp = async (req, res) => {
     try {
-        const empId = req.params.id;
+        const empId = req.params.empId;
         const userId = req.params.userId; // Extract userId from params
 
         // Check if the employee belongs to the user

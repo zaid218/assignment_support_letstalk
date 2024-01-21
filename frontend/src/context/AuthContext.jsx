@@ -1,11 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie"; // Import the library
 import { createContext, useEffect, useState } from "react";
-
+import { baseUrl } from "../apiconfig";
 export const AuthContext = createContext();
 
 export const AuthContexProvider = ({ children }) => {
-  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );

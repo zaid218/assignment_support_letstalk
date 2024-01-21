@@ -5,9 +5,8 @@ import HashLoader from "react-spinners/HashLoader";
 import { AuthContext } from "../context/AuthContext";
 import Modal from "../components/Model";
 import Navbar from "../components/Navbar";
-
+import { baseUrl } from '../apiconfig';
 const Dashboard = () => {
-  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
   const [emp, setEmp] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,13 +16,19 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false); // New state variable
 
   const { currentUser } = useContext(AuthContext);
-  
+
 
   const updateEmpData = async () => {
     setIsLoading(true); // Set loading state to true
     try {
-      const result = await axios.get(
-        `${baseUrl}user/emp`
+      const token = currentUser ? currentUser.token : null;
+      if (!token) {
+        return;
+      }
+      const result = await axios.post(
+        `${baseUrl}user/empAll`, {
+          token
+        }
         //send token to update  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
 
       );
@@ -43,9 +48,14 @@ const Dashboard = () => {
           setEmp({}); // Clear the employee list or show an empty list
           return;
         }
-
-        const response = await axios.get(`${baseUrl}user/emp`, {
-          data: { userId },
+        const token = currentUser ? currentUser.token : null;
+        if (!token) {
+          setError("User token not available. Please log in.");
+          return;
+        }
+        const response = await axios.post(`${baseUrl}user/empAll`, {
+          userId,
+           token
           //send token to fetch  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
         });
         setEmp(response.data);
@@ -139,11 +149,12 @@ const Dashboard = () => {
                     <td>{item[1].Salary}</td>
                     <td>{item[1].Designation}</td>
                     <td data-label="Update">
-                      {currentUser.User.username === item[1].Name && (
+                      <i className="fa-regular fa-pen-to-square"></i>
+                      {
                         <Link to={`/employ/edit/${item[1]._id}`}>
                           <i className="fa-regular fa-pen-to-square"></i>
                         </Link>
-                      )}
+                      }
                     </td>
                     <td data-label="Delete">
                       <Link

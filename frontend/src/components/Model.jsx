@@ -1,14 +1,24 @@
-import React from "react";
+import React,{useContext} from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { baseUrl } from "../apiconfig";
+import { AuthContext } from "../context/AuthContext";
 function Modal({ setOpenModal, employeeId, setSelectedEmployeeId, updateEmpData }) {
-  const baseUrl = "https://mindful-gurukul.onrender.com/api/";
+  const { currentUser } = useContext(AuthContext);
+  const token = currentUser ? currentUser.token : null;
+  if (!token) {
+    return;
+  }
+  const userId = currentUser ? currentUser.User._id : null;
+  if (!userId) {
+    return;
+  }
   const handleDelete = async () => {
+    
     try {
-      await axios.delete(`${baseUrl}user/emp/${employeeId}`
-        //send token to delete  by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
-      );
+      await axios.post(`${baseUrl}user/emp/${userId}/${employeeId}`, {
+        token
+      });
       updateEmpData();
     } catch (error) {
       console.log(error.message);

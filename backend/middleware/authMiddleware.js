@@ -1,17 +1,29 @@
+const express = require('express');
 const jwt = require('jsonwebtoken');
 const userModel = require('../Models/userModel');
 
+const app = express();
+
+// Parse JSON requests
+app.use(express.json());
+
 const authenticateUser = async (req, res, next) => {
     try {
-        const token = req.cookies.access_token;
+        const token = req.body.token; // Extract token from request body
         console.log('Received Token:', token); // Log the received token
+        console.log('=========================>')
 
-        // Skip token verification for login route
-        if (req.path === '/api/user/login' || req.path === '/api/user/register'|| req.path === '/') {
-            console.log('Skipping token verification for login route.');
+        if (
+            req.path === '/api/user/login' ||
+            req.path === '/api/user/register' ||
+            req.path === '/' ||
+            (req.path === '/api/user/emp' && req.method === 'GET') || // Skip for GET requests to /api/user/emp
+            (req.path === '/api/user/emp/:userId/:employeeId' && req.method === 'DELETE')
+        ) {
+            console.log('Skipping token verification for selected routes.');
             return next();
         }
-
+        console.log('=========================> HI ')
         if (!token) {
             console.log('Unauthorized access. Token missing.');
             return res.status(401).json('Unauthorized access. Token missing.');
@@ -43,4 +55,6 @@ const authenticateUser = async (req, res, next) => {
     }
 };
 
-module.exports = authenticateUser;
+app.use(authenticateUser);
+
+module.exports = app;
