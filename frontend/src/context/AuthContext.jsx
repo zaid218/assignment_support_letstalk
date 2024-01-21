@@ -13,23 +13,16 @@ export const AuthContexProvider = ({ children }) => {
     try {
       const res = await axios.post(`${baseUrl}user/login`, inputs);
 
-
       const token = res?.data?.token;
 
       if (token) {
-        Cookies.set("access_token", token, {
-          //secure: true,    //apply if site running on secure https
-          sameSite: "None"
-        })
-        const accessToken = Cookies.get("access_token");
-        console.log(accessToken)
         setCurrentUser(res.data);
+        // Update localStorage after setting currentUser
+        localStorage.setItem("user", JSON.stringify(res.data));
+      } else {
+        console.error("Token not found");
       }
-      else {
-        console.error("token not found");
-      }
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Login Error:', error);
     }
   };
@@ -38,8 +31,8 @@ export const AuthContexProvider = ({ children }) => {
     try {
       await axios.post(`${baseUrl}user/logout`);
 
-      // Use js-cookie to clear the token
       Cookies.remove("access_token");
+      localStorage.removeItem("user");
 
       setCurrentUser(null);
     } catch (error) {

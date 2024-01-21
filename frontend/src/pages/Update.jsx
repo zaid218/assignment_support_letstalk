@@ -13,7 +13,7 @@ const Update = () => {
   });
 
   const [err, setError] = useState(null);
-  let id = currentUser.User._id
+  let id = currentUser?.User._id
 
   const navigate = useNavigate();
 
