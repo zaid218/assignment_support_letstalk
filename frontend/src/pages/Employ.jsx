@@ -5,7 +5,6 @@ import axios from "axios";
 
 const Employ = () => {
   const baseUrl = "https://mindful-gurukul.onrender.com/api/";
-  const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const [err, setError] = useState(null);
   const [value, setValue] = useState({});
   

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import "./style.scss";
 import Home from "./pages/Home";
@@ -14,7 +14,6 @@ import PaymentGateway from "./pages/PaymentGateway";
 import Employ from "./pages/Employ";
 import AddEmp from "./pages/AddEmp";
 import NotFound from "./pages/NotFound";
-import { AuthContext } from './context/AuthContext';
 
 function Layout() {
   return (
@@ -56,7 +55,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const { currentUser } = useContext(AuthContext); // Add this line
   return (
     <div className="app">
       <div className="container">

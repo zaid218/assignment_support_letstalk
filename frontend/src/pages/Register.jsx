@@ -6,7 +6,6 @@ import Footer from '../components/Footer';
 
 const Register = () => {
   const baseUrl = "https://mindful-gurukul.onrender.com/api/";
-  const originalUrl = "https://react-crud-v3am.onrender.com/api/";
   const [inputs, setInputs] = useState({
     username: "",
     email: "",

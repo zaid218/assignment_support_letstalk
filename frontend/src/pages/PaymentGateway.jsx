@@ -3,9 +3,8 @@ import axios from 'axios';
 
 const PaymentGateway = () => {
 	const baseUrl = "https://mindful-gurukul.onrender.com/api/";
-	const originalUrl = "https://react-crud-v3am.onrender.com/api/";
 
-	const [buy, setBuy] = useState({
+	const [buy] = useState({
 		amount: 10
 	});
 
