@@ -15,30 +15,22 @@ export const AuthContexProvider = ({ children }) => {
       const res = await axios.post(`${baseUrl}user/login`, inputs);
 
 
-      const setCookieHeader = res?.headers?.["set-cookie"];
-      
-      if (setCookieHeader) {
-        const token = setCookieHeader.split("access_token=")[1].split(";")[0];
-        if (token) {
-          console.log("Access Token:", token); 
-          Cookies.set("access_token", token, {
-            //secure: true,    //apply if site running on secure https
-            sameSite: "None"
-          })
-          const accessToken = Cookies.get("access_token");
-          console.log("Access Token:", accessToken);
+      const token = res?.data?.token;
 
-          setCurrentUser(res.data);
-        }
-        else {
-          console.error("token not found in the Set-Cookie header.");
-        }
-      } else {
-        console.error("Set-Cookie header not found in the response.");
+      if (token) {
+        Cookies.set("access_token", token, {
+          //secure: true,    //apply if site running on secure https
+          sameSite: "None"
+        })
+        const accessToken = Cookies.get("access_token");
+        console.log(accessToken)
+        setCurrentUser(res.data);
       }
-
-
-    } catch (error) {
+      else {
+        console.error("token not found");
+      }
+    }
+    catch (error) {
       console.error('Login Error:', error);
     }
   };

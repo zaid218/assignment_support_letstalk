@@ -7,7 +7,7 @@ const authenticateUser = async (req, res, next) => {
         console.log('Received Token:', token); // Log the received token
 
         // Skip token verification for login route
-        if (req.path === '/api/user/login' || req.path === '/api/user/register') {
+        if (req.path === '/api/user/login' || req.path === '/api/user/register'|| req.path === '/') {
             console.log('Skipping token verification for login route.');
             return next();
         }

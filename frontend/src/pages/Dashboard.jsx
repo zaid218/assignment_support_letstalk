@@ -18,20 +18,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false); // New state variable
 
   const { currentUser } = useContext(AuthContext);
-  const fetchEmp = async () => {
-    setIsLoading(true); // Set loading state to true
-    try {
-      const result = await axios.get(
-        `${baseUrl}user/emp`
-        //first fetchEmp is not called becausd caaling already done in the useeffect  and secondly send token to fetch by using const accessToken = Cookies.get("access_token"); and using import Cookies from "js-cookie"; 
-
-      );
-      setEmp(result.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-    setIsLoading(false); // Set loading state to false after data fetch
-  };
+  
 
   const updateEmpData = async () => {
     setIsLoading(true); // Set loading state to true
